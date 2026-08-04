@@ -1,0 +1,328 @@
+/* =========================================================
+   RAMATECHCODE LAB & TECH — DESIGN SYSTEM
+   Signature: the page is built like a circuit board — copper
+   trace lines connect sections, solder-pad nodes mark stops,
+   and labels read like PCB silkscreen text (R1, U2, MODULE 01).
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  /* Color: PCB solder-mask green + copper traces + silkscreen white */
+  --board-deep:      #0B241B;   /* deepest solder-mask green, page bg */
+  --board:            #0F2D22;  /* panel background */
+  --board-raised:     #163B2C;  /* card / raised panel */
+  --board-line:       #24503C;  /* hairline dividers on dark */
+  --copper:           #C97A3D;  /* primary accent — copper trace */
+  --copper-bright:    #E2985C;  /* hover state */
+  --gold-pad:         #D4AF37;  /* secondary accent — solder pad / success */
+  --silkscreen:       #EDEDE3;  /* primary text on dark, off-white */
+  --silkscreen-dim:   #9FB8AA;  /* muted text on dark */
+  --paper:            #F7F5EF; /* light sections */
+  --ink:              #101B16; /* primary text on light */
+  --ink-dim:          #55665D; /* muted text on light */
+  --danger:           #D9584A;
+
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --radius: 10px;
+  --max-width: 1180px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  line-height: 1.15;
+  margin: 0 0 0.5em;
+  letter-spacing: -0.01em;
+}
+
+p { margin: 0 0 1em; }
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+button { font-family: inherit; cursor: pointer; }
+
+.wrap {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ---------- Silkscreen labels (the numbering / eyebrow motif) ---------- */
+.pcb-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--copper);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.pcb-label::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold-pad);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18);
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 26px;
+  border-radius: var(--radius);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 15px;
+  border: 1px solid transparent;
+  transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease;
+}
+.btn:active { transform: scale(0.97); }
+.btn-copper {
+  background: var(--copper);
+  color: var(--board-deep);
+}
+.btn-copper:hover { background: var(--copper-bright); }
+.btn-outline {
+  background: transparent;
+  border-color: var(--board-line);
+  color: var(--silkscreen);
+}
+.btn-outline:hover { border-color: var(--copper); color: var(--copper); }
+.btn-outline-dark {
+  background: transparent;
+  border-color: #d7d2c4;
+  color: var(--ink);
+}
+.btn-outline-dark:hover { border-color: var(--copper); color: var(--copper); }
+.btn-danger { background: var(--danger); color: #fff; }
+.btn-block { width: 100%; }
+.btn:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: 2px solid var(--copper);
+  outline-offset: 2px;
+}
+
+/* ---------- Nav ---------- */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(11, 36, 27, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--board-line);
+}
+.nav .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 19px;
+  color: var(--silkscreen);
+}
+.brand-mark {
+  width: 34px; height: 34px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid var(--copper);
+  flex-shrink: 0;
+  background: var(--board-raised);
+}
+.nav-links { display: flex; align-items: center; gap: 28px; }
+.nav-links a { color: var(--silkscreen-dim); font-size: 14.5px; font-weight: 500; transition: color 0.2s; }
+.nav-links a:hover { color: var(--silkscreen); }
+.nav-cta { display: flex; align-items: center; gap: 12px; }
+
+/* ---------- Section shells ---------- */
+.section-dark { background: var(--board-deep); color: var(--silkscreen); }
+.section-light { background: var(--paper); color: var(--ink); }
+.section { padding: 96px 0; }
+@media (max-width: 720px) { .section { padding: 64px 0; } }
+
+.section-head { max-width: 640px; margin-bottom: 56px; }
+.section-head h2 { font-size: clamp(28px, 4vw, 38px); }
+.section-head p { color: var(--ink-dim); font-size: 17px; }
+.section-dark .section-head p { color: var(--silkscreen-dim); }
+
+/* ---------- Trace connector (the signature element) ---------- */
+.trace {
+  position: relative;
+  padding-left: 28px;
+}
+.trace::before {
+  content: '';
+  position: absolute;
+  left: 4px; top: 6px; bottom: 6px;
+  width: 2px;
+  background: linear-gradient(var(--copper), transparent 95%);
+}
+.trace::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--copper);
+  background: var(--board-deep);
+}
+
+/* ---------- Cards ---------- */
+.card {
+  background: var(--board-raised);
+  border: 1px solid var(--board-line);
+  border-radius: var(--radius);
+  padding: 28px;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.card:hover { border-color: var(--copper); }
+.section-light .card {
+  background: #fff;
+  border-color: #e7e2d3;
+}
+.section-light .card:hover { border-color: var(--copper); }
+
+.card-num {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--copper);
+  letter-spacing: 0.08em;
+}
+
+/* ---------- Grids ---------- */
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+@media (max-width: 900px) {
+  .grid-3, .grid-4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .grid-3, .grid-4, .grid-2 { grid-template-columns: 1fr; }
+}
+
+/* ---------- Forms ---------- */
+.field { margin-bottom: 18px; }
+.field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--ink-dim);
+}
+.section-dark .field label, .form-dark .field label { color: var(--silkscreen-dim); }
+.field input, .field select, .field textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid #d7d2c4;
+  background: #fff;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--ink);
+}
+.form-dark .field input, .form-dark .field select, .form-dark .field textarea {
+  background: var(--board-raised);
+  border-color: var(--board-line);
+  color: var(--silkscreen);
+}
+.field textarea { resize: vertical; min-height: 90px; }
+.field-hint { font-size: 12.5px; color: var(--ink-dim); margin-top: 4px; }
+.form-dark .field-hint { color: var(--silkscreen-dim); }
+
+.auth-shell {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--board-deep);
+  padding: 40px 20px;
+}
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  background: var(--board-raised);
+  border: 1px solid var(--board-line);
+  border-radius: 16px;
+  padding: 40px;
+  color: var(--silkscreen);
+}
+.auth-card .brand { justify-content: center; margin-bottom: 24px; }
+.auth-card h1 { font-size: 24px; text-align: center; }
+.auth-card > p { text-align: center; color: var(--silkscreen-dim); font-size: 14px; margin-bottom: 28px; }
+.auth-foot { text-align: center; font-size: 14px; color: var(--silkscreen-dim); margin-top: 16px; }
+.auth-foot a { color: var(--copper); font-weight: 600; }
+
+.alert {
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 16px;
+  display: none;
+}
+.alert.show { display: block; }
+.alert-error { background: rgba(217, 88, 74, 0.15); border: 1px solid var(--danger); color: #ffb3ab; }
+.alert-success { background: rgba(212, 175, 55, 0.15); border: 1px solid var(--gold-pad); color: var(--gold-pad); }
+.section-light .alert-error { color: #8a2f24; }
+.section-light .alert-success { color: #7a5f10; }
+
+/* ---------- Footer ---------- */
+.footer {
+  background: var(--board-deep);
+  color: var(--silkscreen-dim);
+  padding: 48px 0;
+  border-top: 1px solid var(--board-line);
+  font-size: 14px;
+}
+.footer .wrap { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+
+/* ---------- Utility ---------- */
+.mono { font-family: var(--font-mono); }
+.text-center { text-align: center; }
+.mt-0 { margin-top: 0; }
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.badge-pending { background: rgba(212, 175, 55, 0.15); color: #a3821f; }
+.badge-approved, .badge-successful { background: rgba(46, 139, 87, 0.15); color: #1f6b45; }
+.badge-suspended, .badge-failed { background: rgba(217, 88, 74, 0.15); color: #a13b2f; }
+.badge-open { background: rgba(217, 88, 74, 0.15); color: #a13b2f; }
+.badge-in_progress { background: rgba(212, 175, 55, 0.15); color: #a3821f; }
+.badge-resolved { background: rgba(46, 139, 87, 0.15); color: #1f6b45; }

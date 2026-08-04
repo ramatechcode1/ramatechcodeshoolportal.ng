@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Ramatechcode Lab & Tech</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+  #schoolsMap { height: 420px; border-radius: var(--radius); border: 1px solid #eee5d3; margin-bottom: 24px; }
+  .leaflet-popup-content { font-family: var(--font-body); font-size: 13.5px; }
+  .leaflet-popup-content strong { font-family: var(--font-display); }
+</style>
+</head>
+<body class="app-body">
+
+<div class="app-shell">
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><img src="logo.jpg" alt="Ramatechcode Lab & Tech logo" class="brand-mark"> Ramatechcode</div>
+    <nav class="side-nav">
+      <button data-view="overview" class="active"><span class="dot"></span> Overview</button>
+      <button data-view="schools"><span class="dot"></span> Schools & map</button>
+      <button data-view="payments"><span class="dot"></span> All payments</button>
+      <button data-view="complaints"><span class="dot"></span> Complaints</button>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="school-name">Admin console</div>
+      <div class="school-status" id="adminName" style="color:var(--silkscreen-dim);">—</div>
+      <button class="btn btn-outline btn-block" id="logoutBtn">Log out</button>
+    </div>
+  </aside>
+
+  <div class="main-area">
+    <div class="topbar">
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+      <h1 id="viewTitle">Overview</h1>
+    </div>
+    <div class="content" style="max-width:1200px;">
+
+      <!-- OVERVIEW -->
+      <section data-panel="overview">
+        <div class="stat-grid">
+          <div class="stat-card"><span class="pcb-label">Schools</span><div class="stat-num" id="statSchools">0</div></div>
+          <div class="stat-card"><span class="pcb-label">Students</span><div class="stat-num" id="statStudents">0</div></div>
+          <div class="stat-card"><span class="pcb-label">Total revenue</span><div class="stat-num" id="statRevenue">₦0</div></div>
+          <div class="stat-card"><span class="pcb-label">Open complaints</span><div class="stat-num" id="statComplaints">0</div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h2>Schools by location</h2></div>
+          <div id="schoolsMap"></div>
+          <p style="color:var(--ink-dim); font-size:13px;">Only schools that have shared their location appear on the map.</p>
+        </div>
+      </section>
+
+      <!-- SCHOOLS -->
+      <section data-panel="schools" hidden>
+        <div class="panel">
+          <div class="panel-head"><h2>All registered schools</h2></div>
+          <div id="schoolsTableWrap"></div>
+        </div>
+      </section>
+
+      <!-- PAYMENTS -->
+      <section data-panel="payments" hidden>
+        <div class="panel">
+          <div class="panel-head"><h2>All payments</h2></div>
+          <div id="paymentsTableWrap"></div>
+        </div>
+      </section>
+
+      <!-- COMPLAINTS -->
+      <section data-panel="complaints" hidden>
+        <div class="panel">
+          <div class="panel-head"><h2>All complaints</h2></div>
+          <div id="complaintsTableWrap"></div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<!-- Reply modal -->
+<div class="modal-backdrop" id="replyModalBackdrop">
+  <div class="modal">
+    <h3>Respond to complaint</h3>
+    <form id="replyForm">
+      <input type="hidden" id="replyComplaintId">
+      <div class="field">
+        <label for="replyStatus">Status</label>
+        <select id="replyStatus">
+          <option value="open">Open</option>
+          <option value="in_progress">In progress</option>
+          <option value="resolved">Resolved</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="replyMessage">Reply</label>
+        <textarea id="replyMessage" placeholder="Your response..."></textarea>
+      </div>
+      <div class="modal-close-row">
+        <button type="button" class="btn btn-outline-dark" id="cancelReply">Cancel</button>
+        <button type="submit" class="btn btn-copper">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="js/config.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

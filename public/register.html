@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register your school — Ramatechcode Lab & Tech</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="auth-shell">
+  <div class="auth-card">
+    <div class="brand"><img src="logo.jpg" alt="Ramatechcode Lab & Tech logo" class="brand-mark"> Ramatechcode</div>
+    <h1>Register your school</h1>
+    <p>Create your school's portal in under five minutes.</p>
+
+    <div class="alert alert-error" id="errorBox"></div>
+    <div class="alert alert-success" id="successBox"></div>
+
+    <form id="registerForm" class="form-dark">
+      <div class="field">
+        <label for="schoolName">School name</label>
+        <input id="schoolName" type="text" placeholder="e.g. Bright Future Academy" required>
+      </div>
+      <div class="field">
+        <label for="schoolType">School type</label>
+        <select id="schoolType">
+          <option value="Primary & Secondary">Primary & Secondary</option>
+          <option value="Primary">Primary only</option>
+          <option value="Secondary">Secondary only</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="address">School address</label>
+        <input id="address" type="text" placeholder="Street, city, state" required>
+      </div>
+      <div class="field">
+        <label for="contactName">Contact person</label>
+        <input id="contactName" type="text" placeholder="Principal / ICT coordinator name" required>
+      </div>
+      <div class="field">
+        <label for="phone">Phone number</label>
+        <input id="phone" type="tel" placeholder="080..." required>
+      </div>
+      <div class="field">
+        <label for="email">Email address</label>
+        <input id="email" type="email" placeholder="school@example.com" required>
+      </div>
+      <div class="field">
+        <label for="password">Create a password</label>
+        <input id="password" type="password" placeholder="At least 6 characters" minlength="6" required>
+      </div>
+      <button type="submit" class="btn btn-copper btn-block" id="submitBtn">Create school portal</button>
+    </form>
+
+    <p class="auth-foot">Already registered? <a href="login.html">Log in</a></p>
+    <p class="auth-foot"><a href="index.html">← Back to home</a></p>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script>
+const form = document.getElementById('registerForm');
+const errorBox = document.getElementById('errorBox');
+const successBox = document.getElementById('successBox');
+const submitBtn = document.getElementById('submitBtn');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  errorBox.classList.remove('show');
+  successBox.classList.remove('show');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Creating your portal...';
+
+  try {
+    const data = await apiRequest('/auth/register', {
+      method: 'POST',
+      body: {
+        schoolName: document.getElementById('schoolName').value.trim(),
+        schoolType: document.getElementById('schoolType').value,
+        address: document.getElementById('address').value.trim(),
+        contactName: document.getElementById('contactName').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        password: document.getElementById('password').value
+      }
+    });
+
+    localStorage.setItem('rtc_token', data.token);
+    localStorage.setItem('rtc_school', JSON.stringify(data.school));
+
+    successBox.textContent = 'School registered! Taking you to your dashboard...';
+    successBox.classList.add('show');
+    setTimeout(() => { window.location.href = 'dashboard.html'; }, 900);
+  } catch (err) {
+    errorBox.textContent = err.message;
+    errorBox.classList.add('show');
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Create school portal';
+  }
+});
+</script>
+</body>
+</html>

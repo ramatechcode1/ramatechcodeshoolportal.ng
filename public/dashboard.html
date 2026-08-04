@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — Ramatechcode Lab & Tech</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body class="app-body">
+
+<div class="app-shell">
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><img src="logo.jpg" alt="Ramatechcode Lab & Tech logo" class="brand-mark"> Ramatechcode</div>
+    <nav class="side-nav">
+      <button data-view="overview" class="active"><span class="dot"></span> Overview</button>
+      <button data-view="students"><span class="dot"></span> Students</button>
+      <button data-view="payments"><span class="dot"></span> Payments</button>
+      <button data-view="complaints"><span class="dot"></span> Complaints</button>
+      <button data-view="profile"><span class="dot"></span> School profile</button>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="school-name" id="sideSchoolName">—</div>
+      <div class="school-status"><span class="badge" id="sideSchoolStatus">—</span></div>
+      <button class="btn btn-outline btn-block" id="logoutBtn">Log out</button>
+    </div>
+  </aside>
+
+  <div class="main-area">
+    <div class="topbar">
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+      <h1 id="viewTitle">Overview</h1>
+      <button class="btn btn-copper" id="topAddStudentBtn" style="display:none;">+ Add student</button>
+    </div>
+
+    <div class="content">
+
+      <!-- OVERVIEW -->
+      <section data-panel="overview">
+        <div class="stat-grid">
+          <div class="stat-card"><span class="pcb-label">Students</span><div class="stat-num" id="statStudents">0</div></div>
+          <div class="stat-card"><span class="pcb-label">Total paid</span><div class="stat-num" id="statRevenue">₦0</div></div>
+          <div class="stat-card"><span class="pcb-label">School status</span><div class="stat-num"><span class="badge" id="statStatus">—</span></div></div>
+          <div class="stat-card"><span class="pcb-label">Location</span><div class="stat-num" id="statLocation" style="font-size:15px;">Not shared</div></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h2>Recent payments</h2><button class="btn btn-outline-dark" data-goto="payments">View all</button></div>
+          <div id="overviewPayments"></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h2>Recently added students</h2><button class="btn btn-outline-dark" data-goto="students">View all</button></div>
+          <div id="overviewStudents"></div>
+        </div>
+      </section>
+
+      <!-- STUDENTS -->
+      <section data-panel="students" hidden>
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Students interested in the programme</h2>
+            <button class="btn btn-copper" id="addStudentBtn">+ Add student</button>
+          </div>
+          <div id="studentsTableWrap"></div>
+        </div>
+      </section>
+
+      <!-- PAYMENTS -->
+      <section data-panel="payments" hidden>
+        <div class="panel">
+          <div class="panel-head"><h2>Make a payment</h2></div>
+          <p style="color:var(--ink-dim); font-size:14px; margin-top:-8px;">Pay any amount — a full month for all students, a partial group, or a top-up. A unique reference is generated for every payment.</p>
+          <form id="payForm">
+            <div class="grid-2">
+              <div class="field">
+                <label for="payAmount">Amount (₦)</label>
+                <input id="payAmount" type="number" min="1" step="1" placeholder="e.g. 30000" required>
+              </div>
+              <div class="field">
+                <label for="payMonth">For month</label>
+                <input id="payMonth" type="month">
+              </div>
+            </div>
+            <div class="grid-2">
+              <div class="field">
+                <label for="payCovers">Number of students this covers (optional)</label>
+                <input id="payCovers" type="number" min="0" step="1" placeholder="e.g. 10">
+              </div>
+              <div class="field">
+                <label for="payNote">Note (optional)</label>
+                <input id="payNote" type="text" placeholder="e.g. August fees, JSS1 group">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-copper" id="payBtn">Pay with Flutterwave</button>
+          </form>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h2>Payment history</h2></div>
+          <div id="paymentsTableWrap"></div>
+        </div>
+      </section>
+
+      <!-- COMPLAINTS -->
+      <section data-panel="complaints" hidden>
+        <div class="panel">
+          <div class="panel-head"><h2>File a complaint</h2></div>
+          <form id="complaintForm">
+            <div class="field">
+              <label for="cSubject">Subject</label>
+              <input id="cSubject" type="text" placeholder="e.g. Instructor did not show up" required>
+            </div>
+            <div class="field">
+              <label for="cMessage">Details</label>
+              <textarea id="cMessage" placeholder="Describe the issue..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-copper">Submit complaint</button>
+          </form>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h2>Your complaints</h2></div>
+          <div id="complaintsTableWrap"></div>
+        </div>
+      </section>
+
+      <!-- PROFILE / LOCATION -->
+      <section data-panel="profile" hidden>
+        <div class="panel">
+          <div class="panel-head"><h2>School profile</h2></div>
+          <form id="profileForm">
+            <div class="grid-2">
+              <div class="field"><label for="pName">School name</label><input id="pName" type="text" required></div>
+              <div class="field"><label for="pType">School type</label>
+                <select id="pType">
+                  <option value="Primary & Secondary">Primary & Secondary</option>
+                  <option value="Primary">Primary only</option>
+                  <option value="Secondary">Secondary only</option>
+                </select>
+              </div>
+            </div>
+            <div class="field"><label for="pAddress">Address</label><input id="pAddress" type="text" required></div>
+            <div class="grid-2">
+              <div class="field"><label for="pContact">Contact person</label><input id="pContact" type="text" required></div>
+              <div class="field"><label for="pPhone">Phone</label><input id="pPhone" type="tel" required></div>
+            </div>
+            <button type="submit" class="btn btn-copper">Save changes</button>
+          </form>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h2>Share your school's location</h2></div>
+          <p style="color:var(--ink-dim); font-size:14px; margin-top:-8px;">Sharing your location lets Ramatechcode admin plot your school on the coverage map and plan visits accurately.</p>
+          <div class="location-card">
+            <div class="location-status" id="locationStatus">Location not shared yet.</div>
+            <button class="btn btn-outline-dark" id="shareLocationBtn">Share my exact location</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<!-- Add / Edit Student Modal -->
+<div class="modal-backdrop" id="studentModalBackdrop">
+  <div class="modal">
+    <h3 id="studentModalTitle">Add student</h3>
+    <div class="alert alert-error" id="studentModalError"></div>
+    <form id="studentForm">
+      <input type="hidden" id="studentId">
+      <div class="field"><label for="sName">Full name</label><input id="sName" type="text" required></div>
+      <div class="grid-2">
+        <div class="field"><label for="sClass">Class</label><input id="sClass" type="text" placeholder="e.g. JSS2"></div>
+        <div class="field"><label for="sCourse">Interested course</label><input id="sCourse" type="text" placeholder="e.g. Robotics"></div>
+      </div>
+      <div class="grid-2">
+        <div class="field"><label for="sParentPhone">Parent phone</label><input id="sParentPhone" type="tel"></div>
+        <div class="field"><label for="sParentEmail">Parent email</label><input id="sParentEmail" type="email"></div>
+      </div>
+      <div class="modal-close-row">
+        <button type="button" class="btn btn-outline-dark" id="cancelStudentModal">Cancel</button>
+        <button type="submit" class="btn btn-copper" id="saveStudentBtn">Save student</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Payment success modal -->
+<div class="modal-backdrop" id="paySuccessBackdrop">
+  <div class="modal">
+    <h3>Payment successful</h3>
+    <p>Your payment was verified and recorded. Keep this reference for your records:</p>
+    <div class="reference-box" id="payRefBox"></div>
+    <div class="modal-close-row">
+      <button class="btn btn-copper" id="closePaySuccess">Done</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://checkout.flutterwave.com/v3.js"></script>
+<script src="js/config.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

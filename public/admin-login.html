@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin login — Ramatechcode Lab & Tech</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="auth-shell">
+  <div class="auth-card">
+    <div class="brand"><img src="logo.jpg" alt="Ramatechcode Lab & Tech logo" class="brand-mark"> Ramatechcode</div>
+    <h1>Admin login</h1>
+    <p>Oversee every school, payment and complaint.</p>
+
+    <div class="alert alert-error" id="errorBox"></div>
+
+    <form id="loginForm" class="form-dark">
+      <div class="field">
+        <label for="email">Email address</label>
+        <input id="email" type="email" required>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" type="password" required>
+      </div>
+      <button type="submit" class="btn btn-copper btn-block" id="submitBtn">Log in</button>
+    </form>
+
+    <p class="auth-foot"><a href="login.html">← School login</a></p>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script>
+const form = document.getElementById('loginForm');
+const errorBox = document.getElementById('errorBox');
+const submitBtn = document.getElementById('submitBtn');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  errorBox.classList.remove('show');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Logging in...';
+
+  try {
+    const data = await apiRequest('/auth/admin-login', {
+      method: 'POST',
+      body: {
+        email: document.getElementById('email').value.trim(),
+        password: document.getElementById('password').value
+      }
+    });
+    localStorage.setItem('rtc_admin_token', data.token);
+    localStorage.setItem('rtc_admin', JSON.stringify(data.admin));
+    window.location.href = 'admin.html';
+  } catch (err) {
+    errorBox.textContent = err.message;
+    errorBox.classList.add('show');
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Log in';
+  }
+});
+</script>
+</body>
+</html>

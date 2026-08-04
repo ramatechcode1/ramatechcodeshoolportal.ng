@@ -1,0 +1,249 @@
+.hero { padding: 72px 0 90px; overflow: hidden; }
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 48px;
+  align-items: center;
+}
+@media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
+
+.hero-copy h1 {
+  font-size: clamp(34px, 5vw, 54px);
+  color: var(--silkscreen);
+  margin: 18px 0 20px;
+}
+.hero-copy .hl { color: var(--copper); }
+.hero-sub { color: var(--silkscreen-dim); font-size: 17px; max-width: 520px; }
+.hero-actions { display: flex; gap: 14px; margin: 28px 0 40px; flex-wrap: wrap; }
+
+.hero-stats { display: flex; gap: 36px; flex-wrap: wrap; }
+.hero-stats div { display: flex; flex-direction: column; }
+.hero-stats strong { font-family: var(--font-display); font-size: 26px; color: var(--gold-pad); }
+.hero-stats span { font-size: 12.5px; color: var(--silkscreen-dim); }
+
+.hero-board { display: flex; justify-content: center; }
+.board-svg { width: 100%; max-width: 420px; animation: fadeUp 0.9s ease both; }
+.board-face { fill: var(--board-raised); stroke: var(--board-line); }
+.traces { fill: none; stroke: var(--copper); stroke-width: 2; opacity: 0.85; }
+.pads circle { fill: var(--gold-pad); }
+.chip { fill: var(--board-deep); stroke: var(--copper); stroke-width: 1.5; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Course cards, populated from JS */
+.course-card {
+  background: var(--board-raised);
+  border: 1px solid var(--board-line);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: border-color 0.2s ease;
+}
+.course-card:hover { border-color: var(--copper); }
+.course-card .card-num { color: var(--gold-pad); }
+.course-card h3 { color: var(--silkscreen); font-size: 18px; margin-bottom: 8px; }
+.course-card p { color: var(--silkscreen-dim); font-size: 14.5px; margin-bottom: 10px; }
+.course-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.course-tags span {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(201, 122, 61, 0.15);
+  color: var(--copper-bright);
+}
+
+.trace-list { display: flex; flex-direction: column; gap: 36px; max-width: 640px; }
+.trace-list h3 { font-size: 19px; }
+.trace-list p { color: var(--ink-dim); }
+
+.pricing-wrap {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 48px;
+  align-items: center;
+}
+@media (max-width: 900px) { .pricing-wrap { grid-template-columns: 1fr; } }
+.price-card {
+  background: var(--board-deep);
+  color: var(--silkscreen);
+  border-radius: 16px;
+  padding: 36px;
+  border: 1px solid var(--board-line);
+}
+.price-num { font-family: var(--font-display); font-size: 48px; color: var(--gold-pad); margin: 10px 0 20px; }
+.price-card ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.price-card li { padding-left: 22px; position: relative; color: var(--silkscreen-dim); font-size: 14.5px; }
+.price-card li::before { content: '›'; position: absolute; left: 0; color: var(--copper); font-weight: 700; }
+
+.cta-section h2 { max-width: 620px; margin: 14px auto 12px; }
+.cta-section p { max-width: 520px; margin: 0 auto 28px; color: var(--silkscreen-dim); }
+
+@media (max-width: 720px) {
+  .nav-links { display: none; }
+}
+
+/* =========================================================
+   ADVANCED LAYER — grain, scroll trace, mesh gradients,
+   spotlight cards, magnetic buttons, marquee, nav shrink
+   ========================================================= */
+
+/* Scroll progress trace, styled like a copper wire filling up */
+.scroll-trace {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--copper), var(--gold-pad));
+  z-index: 200;
+  box-shadow: 0 0 8px rgba(201, 122, 61, 0.6);
+  transition: width 0.08s linear;
+}
+
+/* Subtle film-grain texture over the whole page — cheap, and kills the
+   "flat AI gradient" look without costing any real performance */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 199;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Nav shrinks and firms up once you leave the very top of the page */
+.nav { transition: height 0.25s ease, background 0.25s ease; }
+.nav.scrolled .wrap { height: 60px; }
+.nav.scrolled { background: rgba(11, 36, 27, 0.98); border-bottom-color: var(--copper); }
+
+/* Hero mesh — two soft blurred blobs drifting slowly behind the copy */
+.hero { position: relative; }
+.hero-mesh {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.28;
+}
+.blob-copper {
+  width: 480px; height: 480px;
+  background: var(--copper);
+  top: -160px; right: -120px;
+  animation: driftA 18s ease-in-out infinite;
+}
+.blob-gold {
+  width: 380px; height: 380px;
+  background: var(--gold-pad);
+  bottom: -140px; left: -100px;
+  animation: driftB 22s ease-in-out infinite;
+}
+@keyframes driftA {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-40px, 30px) scale(1.08); }
+}
+@keyframes driftB {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, -25px) scale(1.05); }
+}
+.hero-grid { position: relative; z-index: 1; }
+
+/* Pulsing solder pads on the hero board illustration */
+.pads circle {
+  animation: padPulse 2.6s ease-in-out infinite;
+}
+.pads circle:nth-child(2) { animation-delay: 0.3s; }
+.pads circle:nth-child(3) { animation-delay: 0.6s; }
+.pads circle:nth-child(4) { animation-delay: 0.9s; }
+.pads circle:nth-child(5) { animation-delay: 1.2s; }
+.pads circle:nth-child(6) { animation-delay: 1.5s; }
+.pads circle:nth-child(7) { animation-delay: 1.8s; }
+.pads circle:nth-child(8) { animation-delay: 2.1s; }
+@keyframes padPulse {
+  0%, 100% { opacity: 1; r: 6; }
+  50% { opacity: 0.5; r: 8; }
+}
+
+/* Magnetic buttons: subtle pull toward the cursor (JS-driven transform)
+   plus a light sweep across on hover */
+.btn-magnetic {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.15s ease-out, background 0.2s ease, border-color 0.2s ease;
+}
+.btn-magnetic::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -60%;
+  width: 40%; height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.35), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+}
+.btn-magnetic:hover::after { left: 130%; }
+
+/* Spotlight glow that follows the cursor across cards — driven by
+   --mx/--my custom properties set in advanced.js */
+.card, .course-card, .price-card {
+  position: relative;
+  isolation: isolate;
+}
+.card::before, .course-card::before, .price-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), rgba(201, 122, 61, 0.16), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  z-index: -1;
+  pointer-events: none;
+}
+.card:hover::before, .course-card:hover::before, .price-card:hover::before { opacity: 1; }
+
+/* Marquee strip — a continuous belt of course keywords, like a running
+   silkscreen label along the board edge */
+.marquee {
+  overflow: hidden;
+  border-top: 1px solid var(--board-line);
+  border-bottom: 1px solid var(--board-line);
+  padding: 14px 0;
+}
+.marquee-track {
+  display: flex;
+  gap: 18px;
+  width: max-content;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: var(--copper);
+  animation: marqueeScroll 30s linear infinite;
+}
+.marquee-track span:nth-child(odd) { color: var(--silkscreen-dim); }
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; overflow-x: auto; }
+  .blob { animation: none; }
+  .pads circle { animation: none; }
+}
+
+/* Gradient-underline treatment for the hero highlight word */
+.hero-copy .hl {
+  position: relative;
+  background: linear-gradient(90deg, var(--copper-bright), var(--gold-pad));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
