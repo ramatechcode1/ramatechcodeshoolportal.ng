@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Ramatechcode Lab & Tech — School Partnership Portal
 
 A full website + portal for Ramatechcode Lab & Tech: a public landing page, a
@@ -118,3 +119,6 @@ deployed backend URL for production.
   fully with Flutterwave's test keys and test cards.
 - Put the backend behind HTTPS before going live; browsers block Geolocation
   access on plain HTTP for any origin other than `localhost`.
+=======
+# ramatechcodeshoolportal.ng
+>>>>>>> 49c066a49c3cb7ba17353b193cd95feecc3786c2
